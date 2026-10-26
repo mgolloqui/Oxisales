@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorio de Oxisales: Desafío de Nomenclatura Tradicional</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Orbitron & Inter & JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              black: '#050811',
+              dark: '#0B1120',
+              card: '#111A2E',
+              border: '#1E293B',
+              neonGreen: '#10B981',
+              neonCyan: '#06B6D4',
+              neonPink: '#F43F5E',
+              neonAmber: '#F59E0B',
+              neonPurple: '#A855F7'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            orbitron: ['Orbitron', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Cyberpunk Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b1120;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(6, 182, 212, 0.4);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 185, 129, 0.7);
+    }
+
+    /* Glassmorphism & Neon Effects */
+    .cyber-panel {
+      background: rgba(17, 26, 46, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+
+    .cyber-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cyber-card:hover {
+      border-color: rgba(6, 182, 212, 0.5);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    }
+
+    .glow-cyan {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+    }
+    .glow-green {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+    }
+    .glow-pink {
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.35);
+    }
+    .glow-amber {
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+    }
+
+    /* Bubbling animation for reaction flask */
+    @keyframes bubbleUp {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      50% { opacity: 0.9; }
+      100% { transform: translateY(-45px) scale(1.2); opacity: 0; }
+    }
+
+    .bubble-anim {
+      animation: bubbleUp 1.8s infinite ease-in;
+    }
+
+    /* Audio FX simulation visual feedback */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.08); }
+    }
+    .bg-pulse-orbs {
+      animation: pulseGlow 5s infinite ease-in-out;
+    }
+
+    select option {
+      background-color: #0b1120;
+      color: #f8fafc;
+    }
+  </style>
+</head>
+<body class="bg-[#050811] text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
+
+  <!-- Background Ambient Lights -->
+  <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none bg-pulse-orbs"></div>
+  <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none bg-pulse-orbs" style="animation-delay: 2.5s;"></div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="relative z-10 flex flex-col min-h-screen max-w-7xl mx-auto w-full px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+
+    <!-- HEADER / GAME STATUS BAR -->
+    <header class="cyber-panel rounded-2xl p-3 sm:p-4 mb-4 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-cyan-500/30">
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-tr from-cyan-500 via-teal-500 to-emerald-500 flex items-center justify-center text-white shadow-lg glow-cyan">
+          <i class="fa-solid fa-vial-virus text-xl sm:text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="text-base sm:text-xl font-black font-orbitron tracking-wide bg-gradient-to-r from-cyan-400 via-emerald-300 to-teal-200 bg-clip-text text-transparent">
+            LABORATORIO DE OXISALES
+          </h1>
+          <p class="text-[11px] sm:text-xs text-slate-400 font-medium">Desafío de Nomenclatura Tradicional</p>
+        </div>
+      </div>
+
+      <!-- Scoreboard, Streak, Timer, Audio toggle -->
+      <div class="flex items-center flex-wrap gap-2 sm:gap-4 text-xs font-mono">
+        <!-- XP Points -->
+        <div class="bg-slate-900/90 px-3 py-1.5 rounded-xl border border-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-bolt text-amber-400 text-sm"></i>
+          <div>
+            <div class="text-[9px] uppercase font-bold text-slate-400 leading-none">XP Puntos</div>
+            <span id="score-display" class="font-bold text-slate-100 text-sm sm:text-base">0</span>
+          </div>
+        </div>
+
+        <!-- Combo Streak -->
+        <div class="bg-slate-900/90 px-3 py-1.5 rounded-xl border border-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-fire text-rose-500 text-sm"></i>
+          <div>
+            <div class="text-[9px] uppercase font-bold text-slate-400 leading-none">Racha</div>
+            <span id="streak-display" class="font-bold text-slate-100 text-sm sm:text-base">0x</span>
+          </div>
+        </div>
+
+        <!-- Audio Toggle Button -->
+        <button id="sfx-toggle-btn" onclick="toggleSFX()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 p-2.5 rounded-xl border border-slate-800 transition" title="Activar/Desactivar Sonido Visual">
+          <i id="sfx-icon" class="fa-solid fa-volume-high text-cyan-400"></i>
+        </button>
+
+        <!-- Compendium Modal Button -->
+        <button onclick="toggleCompendiumModal()" class="cyber-card hover:bg-cyan-950/60 text-cyan-300 px-3 py-2 rounded-xl font-sans font-semibold flex items-center gap-2 border-cyan-500/30 text-xs transition">
+          <i class="fa-solid fa-book-bookmark text-emerald-400"></i>
+          <span class="hidden sm:inline">Galería</span>
+          <span id="compendium-badge" class="bg-cyan-500/20 text-cyan-300 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-cyan-500/30">0/12</span>
+        </button>
+
+        <!-- Export Report Button -->
+        <button onclick="exportStudentReport()" class="cyber-card hover:bg-emerald-950/60 text-emerald-300 px-3 py-2 rounded-xl font-sans font-semibold flex items-center gap-2 border-emerald-500/30 text-xs transition">
+          <i class="fa-solid fa-file-export text-emerald-400"></i>
+          <span class="hidden sm:inline">Informe</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- LEVEL SELECTOR NAV TABS -->
+    <nav class="grid grid-cols-3 gap-2 mb-4 font-orbitron text-xs">
+      <button id="tab-lvl-1" onclick="switchLevel(1)" class="py-2.5 px-2 rounded-xl border border-cyan-500/50 bg-cyan-950/60 text-cyan-300 font-bold transition flex items-center justify-center gap-2 text-center shadow-md">
+        <span class="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center text-[10px] border border-cyan-400/40">1</span>
+        <span class="truncate">Nivel 1: Prefijos / Sufijos</span>
+      </button>
+
+      <button id="tab-lvl-2" onclick="switchLevel(2)" class="py-2.5 px-2 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 font-medium transition hover:text-slate-200 flex items-center justify-center gap-2 text-center">
+        <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">2</span>
+        <span class="truncate">Nivel 2: Construir Fórmula</span>
+      </button>
+
+      <button id="tab-lvl-3" onclick="switchLevel(3)" class="py-2.5 px-2 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 font-medium transition hover:text-slate-200 flex items-center justify-center gap-2 text-center">
+        <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">3</span>
+        <span class="truncate">Nivel 3: Nombre Tradicional</span>
+      </button>
+    </nav>
+
+    <!-- MAIN INTERACTIVE WORKSPACE -->
+    <main class="flex-1 flex flex-col justify-between gap-4">
+
+      <!-- LEVEL 1: PREFIJOS Y SUFIJOS (OXOANIÓN -> TRADICIONAL) -->
+      <section id="panel-level-1" class="cyber-panel rounded-2xl p-4 sm:p-6 flex flex-col gap-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-cyan-300 flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap text-emerald-400"></i>
+              Nivel 1: Deducción del Oxoanión Tradicional
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Determina la terminación o prefijo/sufijo tradicional según la valencia del no metal.</p>
+          </div>
+          <span class="text-xs font-mono bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 px-2.5 py-1 rounded-lg">Reto #<span id="lvl1-count">1</span></span>
+        </div>
+
+        <!-- Target Question Card -->
+        <div class="bg-slate-900/90 rounded-2xl p-6 border border-slate-800 text-center relative overflow-hidden">
+          <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Oxoanión Objetivo</div>
+          <div id="lvl1-anion-formula" class="font-mono text-4xl sm:text-5xl font-black text-cyan-400 my-2 tracking-wider">
+            SO<sub>3</sub><sup>2-</sup>
+          </div>
+          <div id="lvl1-anion-info" class="text-xs sm:text-sm text-slate-300 mt-2 font-mono">
+            No metal: <span class="text-emerald-300 font-bold">Azufre (S)</span> | Estado de Oxidación en el ácido: <span class="text-amber-400 font-bold">+4</span> (Intermedio)
+          </div>
+        </div>
+
+        <!-- Multiple Choice Options -->
+        <div class="space-y-2">
+          <label class="text-xs text-slate-300 font-semibold block mb-2">Selecciona el nombre correcto del anión en nomenclatura tradicional:</label>
+          <div id="lvl1-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Dynamic Options -->
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL 2: CONSTRUCCIÓN DE LA FÓRMULA NEUTRA -->
+      <section id="panel-level-2" class="cyber-panel rounded-2xl p-4 sm:p-6 hidden flex-col gap-5">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-emerald-300 flex items-center gap-2">
+              <i class="fa-solid fa-atom text-cyan-400"></i>
+              Nivel 2: Construcción y Ajuste de la Fórmula Neutra
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Dado el nombre tradicional, elige el catión, el oxoanión y ajusta los subíndices para lograr neutralidad ($\sum \text{cargas}=0$).</p>
+          </div>
+          <span class="text-xs font-mono bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 px-2.5 py-1 rounded-lg">Reto #<span id="lvl2-count">1</span></span>
+        </div>
+
+        <!-- Target Traditional Name -->
+        <div class="bg-slate-900/90 rounded-2xl p-4 sm:p-5 border border-slate-800 text-center">
+          <span class="text-[11px] text-slate-400 uppercase font-semibold block">Sintetizar la sal:</span>
+          <h3 id="lvl2-target-name" class="font-orbitron text-xl sm:text-2xl font-extrabold text-emerald-400 my-1">
+            Sulfito Férrico
+          </h3>
+          <p id="lvl2-target-hint" class="text-xs text-slate-400 italic">Hierro (+3) + Anión procedente del Ácido Sulfuroso (+4)</p>
+        </div>
+
+        <!-- Cation & Anion Pickers Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <!-- Cations Selector -->
+          <div class="lg:col-span-4 cyber-card p-3 rounded-xl flex flex-col h-48 sm:h-56">
+            <span class="text-xs font-bold text-cyan-300 mb-2 flex items-center justify-between border-b border-slate-800 pb-1">
+              <span>1. Catión Metálico</span>
+              <span class="text-[10px] text-slate-500 font-mono">Positivo (q⁺)</span>
+            </span>
+            <div id="lvl2-cations-list" class="overflow-y-auto flex-1 pr-1 space-y-1.5">
+              <!-- Cations Buttons -->
+            </div>
+          </div>
+
+          <!-- Central Reaction & Subindex Adjustment Chamber -->
+          <div class="lg:col-span-4 cyber-panel rounded-xl p-4 flex flex-col justify-between items-center text-center border-cyan-500/30">
+            <!-- Flask Visual -->
+            <div class="relative my-1">
+              <div class="w-16 h-20 relative flex items-end justify-center">
+                <svg viewBox="0 0 100 120" class="w-full h-full drop-shadow-[0_0_12px_rgba(16,185,129,0.3)]">
+                  <path d="M 40,10 L 60,10 L 60,35 L 85,95 C 90,105 80,115 70,115 L 30,115 C 20,115 10,105 15,95 L 40,35 Z" fill="rgba(15, 23, 42, 0.7)" stroke="#10b981" stroke-width="3"/>
+                  <path d="M 18,92 C 16,102 25,110 32,110 L 68,110 C 75,110 84,102 82,92 L 65,55 L 35,55 Z" fill="url(#grad2)" class="opacity-80"/>
+                  <defs>
+                    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#10B981" />
+                      <stop offset="100%" stop-color="#06B6D4" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <!-- Bubbles -->
+                <div id="lvl2-bubbles" class="absolute bottom-2 inset-x-0 flex justify-center pointer-events-none hidden">
+                  <div class="bubble-anim w-2 h-2 bg-emerald-400 rounded-full absolute left-5"></div>
+                  <div class="bubble-anim w-2.5 h-2.5 bg-cyan-400 rounded-full absolute left-8" style="animation-delay: 0.5s;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subindex Adjustment Controls -->
+            <div class="w-full bg-slate-900/90 rounded-xl p-3 border border-slate-800">
+              <span class="text-[11px] text-slate-400 font-semibold block mb-2">3. Ajusta Subíndices para Neutralizar:</span>
+              
+              <div class="flex items-center justify-center gap-3 text-sm font-mono my-2">
+                <!-- Cation Subindex -->
+                <div class="flex items-center gap-1.5 bg-slate-800/80 p-1.5 rounded-lg border border-slate-700">
+                  <span id="lvl2-cation-sym-label" class="font-bold text-cyan-300 text-xs">Me</span>
+                  <button onclick="adjustLvl2Subindex('cation', -1)" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 font-bold text-slate-200 transition">-</button>
+                  <span id="lvl2-sub-cat" class="w-6 text-center font-bold text-emerald-400 text-base">1</span>
+                  <button onclick="adjustLvl2Subindex('cation', 1)" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 font-bold text-slate-200 transition">+</button>
+                </div>
+
+                <!-- Anion Subindex -->
+                <div class="flex items-center gap-1.5 bg-slate-800/80 p-1.5 rounded-lg border border-slate-700">
+                  <span id="lvl2-anion-sym-label" class="font-bold text-pink-300 text-xs">(Oxoanión)</span>
+                  <button onclick="adjustLvl2Subindex('anion', -1)" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 font-bold text-slate-200 transition">-</button>
+                  <span id="lvl2-sub-ani" class="w-6 text-center font-bold text-emerald-400 text-base">1</span>
+                  <button onclick="adjustLvl2Subindex('anion', 1)" class="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 font-bold text-slate-200 transition">+</button>
+                </div>
+              </div>
+
+              <!-- Live Built Formula Preview -->
+              <div class="mt-2 text-center">
+                <span class="text-[10px] text-slate-500">Fórmula Construida:</span>
+                <div id="lvl2-formula-preview" class="font-mono text-lg font-bold text-cyan-300 tracking-wider">
+                  --
+                </div>
+              </div>
+            </div>
+
+            <!-- Validate Button -->
+            <button onclick="validateLevel2()" class="w-full mt-3 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-lg glow-green active:scale-98 transition">
+              <i class="fa-solid fa-check-double mr-1"></i> Validar Fórmula
+            </button>
+          </div>
+
+          <!-- Anions Selector -->
+          <div class="lg:col-span-4 cyber-card p-3 rounded-xl flex flex-col h-48 sm:h-56">
+            <span class="text-xs font-bold text-pink-300 mb-2 flex items-center justify-between border-b border-slate-800 pb-1">
+              <span>2. Oxoanión</span>
+              <span class="text-[10px] text-slate-500 font-mono">Negativo (q⁻)</span>
+            </span>
+            <div id="lvl2-anions-list" class="overflow-y-auto flex-1 pr-1 space-y-1.5">
+              <!-- Anions Buttons -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL 3: DESAFÍO DE NOMENCLATURA TRADICIONAL DIRECTA (PASO A PASO) -->
+      <section id="panel-level-3" class="cyber-panel rounded-2xl p-4 sm:p-6 hidden flex-col gap-5">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-amber-300 flex items-center gap-2">
+              <i class="fa-solid fa-puzzle-piece text-amber-400"></i>
+              Nivel 3: Construcción Directa de Nomenclatura Tradicional
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Dada la fórmula química, ensambla paso a paso el nombre tradicional seleccionando bloques de prefijos, raíces y sufijos.</p>
+          </div>
+          <span class="text-xs font-mono bg-amber-950/80 border border-amber-500/30 text-amber-300 px-2.5 py-1 rounded-lg">Reto #<span id="lvl3-count">1</span></span>
+        </div>
+
+        <!-- Target Formula Header -->
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 text-center">
+          <span class="text-xs text-slate-400 font-semibold uppercase block mb-1">Fórmula de la Oxisal:</span>
+          <div id="lvl3-target-formula" class="font-mono text-3xl sm:text-4xl font-black text-amber-400 my-1 tracking-wider">
+            Cu(ClO<sub>4</sub>)<sub>2</sub>
+          </div>
+          <div id="lvl3-formula-breakdown" class="text-xs text-slate-400 font-mono mt-2">
+            Desglose de cargas: Catión Cobre y Anión Perclorato
+          </div>
+        </div>
+
+        <!-- Assembly Box for Name -->
+        <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800/80">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs text-slate-300 font-semibold">Ensamblaje del Nombre Tradicional:</span>
+            <button onclick="clearLvl3Assembly()" class="text-[11px] text-rose-400 hover:text-rose-300 flex items-center gap-1 transition">
+              <i class="fa-solid fa-rotate-left"></i> Borrar
+            </button>
+          </div>
+
+          <!-- Active Blocks drop region -->
+          <div id="lvl3-assembled-box" class="min-h-[52px] bg-slate-950/80 rounded-xl p-2 border border-dashed border-amber-500/40 flex flex-wrap items-center gap-2">
+            <span class="text-xs text-slate-600 italic px-2">Haz clic en las fichas inferiores para armar el nombre...</span>
+          </div>
+        </div>
+
+        <!-- Interactive Modular Word Blocks -->
+        <div class="space-y-3">
+          <div class="text-xs text-slate-300 font-semibold">Bloques de Construcción Disponibles:</div>
+
+          <div id="lvl3-blocks-container" class="flex flex-wrap gap-2">
+            <!-- Dynamic Block Buttons -->
+          </div>
+        </div>
+
+        <!-- Validate Assembly Button -->
+        <button onclick="validateLevel3()" class="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-white shadow-lg glow-amber active:scale-98 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-spell-check text-base"></i> Validar Nombre Tradicional
+        </button>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-6 pt-3 border-t border-slate-800/80 text-center text-slate-500 text-xs flex flex-wrap justify-between items-center gap-2">
+      <p>© Laboratorio de Química Inorgánica - Didáctica de Oxisales</p>
+      <p class="font-mono text-[11px] text-slate-400">Nomenclatura Tradicional: Hipo-...-ito | -ito | -ato | Per-...-ato</p>
+    </footer>
+
+  </div>
+
+  <!-- MODAL: FEEDBACK PEDAGÓGICO E INTERACTIVO -->
+  <div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+    <div class="cyber-panel max-w-lg w-full rounded-2xl p-6 border-slate-700 shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content">
+      
+      <!-- Icon -->
+      <div id="modal-status-icon" class="w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl shadow-lg">
+        <i class="fa-solid fa-check"></i>
+      </div>
+
+      <h3 id="modal-title" class="text-xl font-black text-center font-orbitron mb-1">¡Respuesta Correcta!</h3>
+      <p id="modal-subtitle" class="text-xs text-center text-slate-400 mb-4">Desglose pedagógico de la reacción:</p>
+
+      <!-- Pedagogical Breakdown Box -->
+      <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5 mb-5 font-mono text-xs text-slate-300">
+        <div class="flex justify-between border-b border-slate-800 pb-1.5">
+          <span class="text-slate-400">Fórmula / Sal:</span>
+          <span id="modal-formula" class="font-bold text-cyan-300">--</span>
+        </div>
+        <div class="flex justify-between border-b border-slate-800 pb-1.5">
+          <span class="text-slate-400">Nombre Tradicional:</span>
+          <span id="modal-trad-name" class="font-bold text-emerald-400">--</span>
+        </div>
+        <div class="flex justify-between border-b border-slate-800 pb-1.5">
+          <span class="text-slate-400">E.O. No Metal:</span>
+          <span id="modal-eo-nometal" class="text-amber-300">--</span>
+        </div>
+        <div class="flex justify-between border-b border-slate-800 pb-1.5">
+          <span class="text-slate-400">E.O. Metal:</span>
+          <span id="modal-eo-metal" class="text-amber-300">--</span>
+        </div>
+        <!-- Deductive Hint Step -->
+        <div id="modal-deduction-text" class="pt-2 text-slate-300 text-[11px] leading-relaxed border-t border-slate-800/80 italic font-sans">
+          --
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button onclick="closeModalAndNext()" class="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+        Siguiente Desafío <i class="fa-solid fa-arrow-right ml-1"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: GALERÍA Y COMPENDIO DE OXISALES DESBLOQUEADAS -->
+  <div id="compendium-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+    <div class="cyber-panel max-w-4xl w-full h-[85vh] rounded-2xl p-5 sm:p-6 border-slate-700 shadow-2xl flex flex-col">
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
+            <i class="fa-solid fa-book-bookmark text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold font-orbitron text-slate-100">Compendio de Oxisales Desbloqueadas</h3>
+            <p class="text-xs text-slate-400">Sales sintetizadas con éxito y sus aplicaciones cotidianas e industriales</p>
+          </div>
+        </div>
+        <button onclick="toggleCompendiumModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Grid of Cards -->
+      <div id="compendium-grid" class="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pr-2">
+        <!-- Dynamic Cards -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT GAME ENGINE LOGIC -->
+  <script>
+    /* AUDIO VISUAL FEEDBACK TOGGLE */
+    let sfxEnabled = true;
+
+    function toggleSFX() {
+      sfxEnabled = !sfxEnabled;
+      const icon = document.getElementById('sfx-icon');
+      if (sfxEnabled) {
+        icon.className = "fa-solid fa-volume-high text-cyan-400";
+      } else {
+        icon.className = "fa-solid fa-volume-xmark text-slate-500";
+      }
+    }
+
+    /* CHEMICAL DATABASE & TRADITIONAL RULES */
+    const CATIONS_DB = [
+      { id: 'Na', name: 'Sodio', symbol: 'Na', charge: 1, tradSuffix: 'de sodio', root: 'sód' },
+      { id: 'K', name: 'Potasio', symbol: 'K', charge: 1, tradSuffix: 'potásico', root: 'potás' },
+      { id: 'Ca', name: 'Calcio', symbol: 'Ca', charge: 2, tradSuffix: 'cálcico', root: 'cálc' },
+      { id: 'Al', name: 'Aluminio', symbol: 'Al', charge: 3, tradSuffix: 'alumínico', root: 'alumín' },
+      { id: 'Fe2', name: 'Hierro (II)', symbol: 'Fe', charge: 2, tradSuffix: 'ferroso', root: 'ferr', valType: 'menor' },
+      { id: 'Fe3', name: 'Hierro (III)', symbol: 'Fe', charge: 3, tradSuffix: 'férrico', root: 'ferr', valType: 'mayor' },
+      { id: 'Cu1', name: 'Cobre (I)', symbol: 'Cu', charge: 1, tradSuffix: 'cuproso', root: 'cupr', valType: 'menor' },
+      { id: 'Cu2', name: 'Cobre (II)', symbol: 'Cu', charge: 2, tradSuffix: 'cúprico', root: 'cupr', valType: 'mayor' }
+    ];
+
+    const ANIONS_DB = [
+      { id: 'ClO', raw: 'ClO', html: 'ClO', charge: 1, nameTrad: 'hipoclorito', acidName: 'ácido hipocloroso', eo: '+1', element: 'Cloro', root: 'clor', prefix: 'hipo', suffix: 'ito' },
+      { id: 'ClO2', raw: 'ClO2', html: 'ClO<sub>2</sub>', charge: 1, nameTrad: 'clorito', acidName: 'ácido cloroso', eo: '+3', element: 'Cloro', root: 'clor', prefix: '', suffix: 'ito' },
+      { id: 'ClO3', raw: 'ClO3', html: 'ClO<sub>3</sub>', charge: 1, nameTrad: 'clorato', acidName: 'ácido clórico', eo: '+5', element: 'Cloro', root: 'clor', prefix: '', suffix: 'ato' },
+      { id: 'ClO4', raw: 'ClO4', html: 'ClO<sub>4</sub>', charge: 1, nameTrad: 'perclorato', acidName: 'ácido perclórico', eo: '+7', element: 'Cloro', root: 'clor', prefix: 'per', suffix: 'ato' },
+      { id: 'SO3', raw: 'SO3', html: 'SO<sub>3</sub>', charge: 2, nameTrad: 'sulfito', acidName: 'ácido sulfuroso', eo: '+4', element: 'Azufre', root: 'sulf', prefix: '', suffix: 'ito' },
+      { id: 'SO4', raw: 'SO4', html: 'SO<sub>4</sub>', charge: 2, nameTrad: 'sulfato', acidName: 'ácido sulfúrico', eo: '+6', element: 'Azufre', root: 'sulf', prefix: '', suffix: 'ato' },
+      { id: 'NO2', raw: 'NO2', html: 'NO<sub>2</sub>', charge: 1, nameTrad: 'nitrito', acidName: 'ácido nitroso', eo: '+3', element: 'Nitrógeno', root: 'nitr', prefix: '', suffix: 'ito' },
+      { id: 'NO3', raw: 'NO3', html: 'NO<sub>3</sub>', charge: 1, nameTrad: 'nitrato', acidName: 'ácido nítrico', eo: '+5', element: 'Nitrógeno', root: 'nitr', prefix: '', suffix: 'ato' },
+      { id: 'PO4', raw: 'PO4', html: 'PO<sub>4</sub>', charge: 3, nameTrad: 'fosfato', acidName: 'ácido fosfórico', eo: '+5', element: 'Fósforo', root: 'fosf', prefix: '', suffix: 'ato' },
+      { id: 'MnO4', raw: 'MnO4', html: 'MnO<sub>4</sub>', charge: 1, nameTrad: 'permanganato', acidName: 'ácido permangánico', eo: '+7', element: 'Manganeso', root: 'mang', prefix: 'per', suffix: 'ato' }
+    ];
+
+    const COMPENDIUM_INFO = {
+      'NaClO': { name: 'Hipoclorito Sódico', desc: 'Conocido comercialmente como lejía o lavandina. Es un desinfectante doméstico y potabilizador de agua fundamental.' },
+      'CaSO4': { name: 'Sulfato Cálcico (Yeso)', desc: 'Ampliamente utilizado en construcción, elaboración de escayolas médicas y como acondicionador de suelos agrícolas.' },
+      'CuSO4': { name: 'Sulfato Cúprico', desc: 'De un característico color azul intenso. Se utiliza como fungicida e insecticida en el caldo bordelés en viticultura.' },
+      'FeSO3': { name: 'Sulfito Ferroso', desc: 'Agente reductor utilizado en tratamientos industriales químicos para neutralizar oxidantes.' },
+      'Fe2(SO4)3': { name: 'Sulfato Férrico', desc: 'Coagulante eficiente para el tratamiento de aguas residuales y potabilización urbana.' },
+      'KClO3': { name: 'Clorato Potásico', desc: 'Agente oxidante fuerte usado en la fabricación de cerillas de seguridad, fuegos artificiales y explosivos.' },
+      'KMnO4': { name: 'Permanganato Potásico', desc: 'Cristales de color violeta oscuro. Potente antiséptico para quemaduras y oxidante en laboratorios.' },
+      'Al2(SO4)3': { name: 'Sulfato de Aluminio', desc: 'Utilizado en la industria papelera y como clarificador de agua en piscinas y plantas potabilizadoras.' },
+      'Cu(ClO4)2': { name: 'Perclorato Cúprico', desc: 'Reactivo oxidante utilizado en la síntesis de compuestos complejos y pirotecnia especializada.' },
+      'NaNO3': { name: 'Nitrato Sódico (Salitre)', desc: 'Componente clave en fertilizantes nitrogenados agrícolas y conservación alimentaria tradicional.' },
+      'Ca(NO3)2': { name: 'Nitrato Cálcico', desc: 'Fertilizante soluble que aporta calcio y nitrógeno directamente a las raíces de los cultivos.' },
+      'Fe(ClO)2': { name: 'Hipoclorito Ferroso', desc: 'Agente desinfectante e intermediario químico inestable en soluciones acuosas.' }
+    };
+
+    /* APP STATE */
+    let currentLevel = 1;
+    let score = 0;
+    let streak = 0;
+    let unlockedCompounds = new Set();
+
+    // Level 1 State
+    let lvl1CurrentTarget = null;
+
+    // Level 2 State
+    let lvl2Target = null;
+    let lvl2SelectedCation = null;
+    let lvl2SelectedAnion = null;
+    let lvl2CationSub = 1;
+    let lvl2AnionSub = 1;
+
+    // Level 3 State
+    let lvl3Target = null;
+    let lvl3AssembledBlocks = [];
+
+    /* INITIALIZATION */
+    window.addEventListener('DOMContentLoaded', () => {
+      initLevel1();
+      initLevel2();
+      initLevel3();
+      updateCompendiumBadge();
+    });
+
+    /* LEVEL SWITCHING NAV */
+    function switchLevel(lvl) {
+      currentLevel = lvl;
+      [1, 2, 3].forEach(i => {
+        const btn = document.getElementById(`tab-lvl-${i}`);
+        const panel = document.getElementById(`panel-level-${i}`);
+        if (i === lvl) {
+          btn.className = "py-2.5 px-2 rounded-xl border border-cyan-500/50 bg-cyan-950/60 text-cyan-300 font-bold transition flex items-center justify-center gap-2 text-center shadow-md";
+          panel.classList.remove('hidden');
+          panel.classList.add('flex');
+        } else {
+          btn.className = "py-2.5 px-2 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 font-medium transition hover:text-slate-200 flex items-center justify-center gap-2 text-center";
+          panel.classList.add('hidden');
+          panel.classList.remove('flex');
+        }
+      });
+    }
+
+    /* ==========================================
+       LEVEL 1 LOGIC
+       ========================================== */
+    function initLevel1() {
+      lvl1CurrentTarget = ANIONS_DB[Math.floor(Math.random() * ANIONS_DB.length)];
+      document.getElementById('lvl1-anion-formula').innerHTML = `${lvl1CurrentTarget.html}<sup>${lvl1CurrentTarget.charge > 1 ? lvl1CurrentTarget.charge : ''}-</sup>`;
+      document.getElementById('lvl1-anion-info').innerHTML = `
+        No metal: <span class="text-emerald-300 font-bold">${lvl1CurrentTarget.element}</span> | 
+        E.O. en el Ácido: <span class="text-amber-400 font-bold">${lvl1CurrentTarget.eo}</span>
+      `;
+
+      // Generate 4 options (1 correct, 3 distractors)
+      const correctName = lvl1CurrentTarget.nameTrad;
+      const options = new Set([correctName]);
+
+      const prefixes = ['hipo', 'per', ''];
+      const suffixes = ['ito', 'ato'];
+
+      while (options.size < 4) {
+        const p = prefixes[Math.floor(Math.random() * prefixes.length)];
+        const s = suffixes[Math.floor(Math.random() * suffixes.length)];
+        const candidate = `${p}${lvl1CurrentTarget.root}${s}`;
+        options.add(candidate);
+      }
+
+      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
+      const container = document.getElementById('lvl1-options-container');
+
+      container.innerHTML = shuffled.map(opt => `
+        <button onclick="checkLevel1('${opt}')" 
+                class="cyber-card p-4 rounded-xl text-center font-mono font-bold text-sm text-cyan-200 hover:text-white hover:border-cyan-400 hover:bg-cyan-950/50 transition capitalize shadow-md">
+          - ${opt}
+        </button>
+      `).join('');
+    }
+
+    function checkLevel1(selected) {
+      const isCorrect = selected.toLowerCase() === lvl1CurrentTarget.nameTrad.toLowerCase();
+      
+      showPedagogicalModal({
+        success: isCorrect,
+        formula: `${lvl1CurrentTarget.html}<sup>${lvl1CurrentTarget.charge}-</sup>`,
+        tradName: capitalize(lvl1CurrentTarget.nameTrad),
+        eoNoMetal: lvl1CurrentTarget.eo,
+        eoMetal: 'N/A (Anión solo)',
+        deduction: isCorrect 
+          ? `<b>¡Correcto!</b> El ${lvl1CurrentTarget.element} actúa con estado de oxidación <b>${lvl1CurrentTarget.eo}</b>, derivado del <i>${lvl1CurrentTarget.acidName}</i>. La terminación cambia según la regla: Ácido <b>-oso</b> → Anión <b>-ito</b> / Ácido <b>-ico</b> → Anión <b>-ato</b>.`
+          : `<b>Error:</b> La respuesta seleccionada fue "${selected}". La opción correcta es <b>"${lvl1CurrentTarget.nameTrad}"</b> porque con E.O. ${lvl1CurrentTarget.eo} proviene del <i>${lvl1CurrentTarget.acidName}</i>.`
+      });
+    }
+
+    /* ==========================================
+       LEVEL 2 LOGIC
+       ========================================== */
+    function initLevel2() {
+      // Pick random Cation & Anion combination
+      const cat = CATIONS_DB[Math.floor(Math.random() * CATIONS_DB.length)];
+      const ani = ANIONS_DB[Math.floor(Math.random() * ANIONS_DB.length)];
+
+      lvl2Target = { cation: cat, anion: ani };
+
+      // Set target title
+      const tradName = `${capitalize(ani.nameTrad)} ${cat.tradSuffix}`;
+      document.getElementById('lvl2-target-name').textContent = tradName;
+      document.getElementById('lvl2-target-hint').textContent = `${cat.name} (${cat.charge > 0 ? '+' + cat.charge : cat.charge}) + Oxoanión ${capitalize(ani.nameTrad)} (${ani.eo})`;
+
+      // Render Lists
+      renderLvl2Cations();
+      renderLvl2Anions();
+
+      lvl2SelectedCation = null;
+      lvl2SelectedAnion = null;
+      lvl2CationSub = 1;
+      lvl2AnionSub = 1;
+      updateLvl2SubindexDisplay();
+      updateLvl2FormulaPreview();
+    }
+
+    function renderLvl2Cations() {
+      const container = document.getElementById('lvl2-cations-list');
+      container.innerHTML = CATIONS_DB.map(c => `
+        <button onclick="selectLvl2Cation('${c.id}')" id="lvl2-cat-${c.id}" 
+                class="w-full p-2 rounded-lg bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 flex items-center justify-between text-xs text-left transition">
+          <span class="font-mono font-bold text-cyan-300">${c.symbol}<sup>${c.charge > 1 ? c.charge : ''}+</sup></span>
+          <span class="text-[11px] text-slate-300">${c.name}</span>
+        </button>
+      `).join('');
+    }
+
+    function renderLvl2Anions() {
+      const container = document.getElementById('lvl2-anions-list');
+      container.innerHTML = ANIONS_DB.map(a => `
+        <button onclick="selectLvl2Anion('${a.id}')" id="lvl2-ani-${a.id}" 
+                class="w-full p-2 rounded-lg bg-slate-900/80 border border-slate-800 hover:border-pink-500/50 flex items-center justify-between text-xs text-left transition">
+          <span class="font-mono font-bold text-pink-300">${a.raw}<sup>${a.charge > 1 ? a.charge : ''}-</sup></span>
+          <span class="text-[11px] text-slate-300">${capitalize(a.nameTrad)}</span>
+        </button>
+      `).join('');
+    }
+
+    function selectLvl2Cation(id) {
+      CATIONS_DB.forEach(c => {
+        const btn = document.getElementById(`lvl2-cat-${c.id}`);
+        if (btn) btn.className = "w-full p-2 rounded-lg bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 flex items-center justify-between text-xs text-left transition";
+      });
+
+      lvl2SelectedCation = CATIONS_DB.find(c => c.id === id);
+      const btn = document.getElementById(`lvl2-cat-${id}`);
+      if (btn) btn.className = "w-full p-2 rounded-lg bg-cyan-950/80 border border-cyan-400 flex items-center justify-between text-xs text-left transition glow-cyan";
+
+      document.getElementById('lvl2-cation-sym-label').textContent = lvl2SelectedCation.symbol;
+      updateLvl2FormulaPreview();
+    }
+
+    function selectLvl2Anion(id) {
+      ANIONS_DB.forEach(a => {
+        const btn = document.getElementById(`lvl2-ani-${a.id}`);
+        if (btn) btn.className = "w-full p-2 rounded-lg bg-slate-900/80 border border-slate-800 hover:border-pink-500/50 flex items-center justify-between text-xs text-left transition";
+      });
+
+      lvl2SelectedAnion = ANIONS_DB.find(a => a.id === id);
+      const btn = document.getElementById(`lvl2-ani-${id}`);
+      if (btn) btn.className = "w-full p-2 rounded-lg bg-pink-950/80 border border-pink-400 flex items-center justify-between text-xs text-left transition glow-pink";
+
+      document.getElementById('lvl2-anion-sym-label').innerHTML = `(${lvl2SelectedAnion.html})`;
+      updateLvl2FormulaPreview();
+    }
+
+    function adjustLvl2Subindex(type, delta) {
+      if (type === 'cation') {
+        lvl2CationSub = Math.max(1, Math.min(6, lvl2CationSub + delta));
+      } else {
+        lvl2AnionSub = Math.max(1, Math.min(6, lvl2AnionSub + delta));
+      }
+      updateLvl2SubindexDisplay();
+      updateLvl2FormulaPreview();
+    }
+
+    function updateLvl2SubindexDisplay() {
+      document.getElementById('lvl2-sub-cat').textContent = lvl2CationSub;
+      document.getElementById('lvl2-sub-ani').textContent = lvl2AnionSub;
+    }
+
+    function updateLvl2FormulaPreview() {
+      if (!lvl2SelectedCation || !lvl2SelectedAnion) {
+        document.getElementById('lvl2-formula-preview').innerHTML = `<span class="text-slate-600 italic text-xs">Selecciona Catión y Oxoanión</span>`;
+        return;
+      }
+
+      const cSub = lvl2CationSub > 1 ? `<sub>${lvl2CationSub}</sub>` : '';
+      let aSub = '';
+      if (lvl2AnionSub > 1) {
+        aSub = `(${lvl2SelectedAnion.html})<sub>${lvl2AnionSub}</sub>`;
+      } else {
+        aSub = lvl2SelectedAnion.html;
+      }
+
+      document.getElementById('lvl2-formula-preview').innerHTML = `${lvl2SelectedCation.symbol}${cSub}${aSub}`;
+      document.getElementById('lvl2-bubbles').classList.remove('hidden');
+    }
+
+    function validateLevel2() {
+      if (!lvl2SelectedCation || !lvl2SelectedAnion) return;
+
+      const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+      const q1 = lvl2SelectedCation.charge;
+      const q2 = lvl2SelectedAnion.charge;
+      const common = gcd(q1, q2);
+
+      const targetCatSub = q2 / common;
+      const targetAniSub = q1 / common;
+
+      const isCationCorrect = lvl2SelectedCation.id === lvl2Target.cation.id;
+      const isAnionCorrect = lvl2SelectedAnion.id === lvl2Target.anion.id;
+      const isSubCorrect = (lvl2CationSub === targetCatSub) && (lvl2AnionSub === targetAniSub);
+
+      const isSuccess = isCationCorrect && isAnionCorrect && isSubCorrect;
+
+      const builtFormulaRaw = buildRawFormulaStr(lvl2SelectedCation, lvl2SelectedAnion, targetCatSub, targetAniSub);
+
+      showPedagogicalModal({
+        success: isSuccess,
+        formula: builtFormulaRaw,
+        tradName: `${capitalize(lvl2Target.anion.nameTrad)} ${lvl2Target.cation.tradSuffix}`,
+        eoNoMetal: lvl2Target.anion.eo,
+        eoMetal: `+${lvl2Target.cation.charge}`,
+        deduction: isSuccess
+          ? `<b>¡Estequiometría Perfecta!</b> Cargas neutras: (${targetCatSub} × +${lvl2Target.cation.charge}) + (${targetAniSub} × -${lvl2Target.anion.charge}) = 0.`
+          : `<b>Error de Formulación:</b> Revisa los reactivos. La respuesta esperada requiere el catión <b>${lvl2Target.cation.name}</b> y el oxoanión <b>${lvl2Target.anion.nameTrad}</b> con subíndices de neutralidad (${targetCatSub}:${targetAniSub}).`
+      });
+    }
+
+    /* ==========================================
+       LEVEL 3 LOGIC
+       ========================================== */
+    function initLevel3() {
+      const cat = CATIONS_DB[Math.floor(Math.random() * CATIONS_DB.length)];
+      const ani = ANIONS_DB[Math.floor(Math.random() * ANIONS_DB.length)];
+
+      const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+      const common = gcd(cat.charge, ani.charge);
+      const catSub = ani.charge / common;
+      const aniSub = cat.charge / common;
+
+      lvl3Target = { cation: cat, anion: ani, catSub, aniSub };
+
+      // Build formula
+      const cSubHtml = catSub > 1 ? `<sub>${catSub}</sub>` : '';
+      const aSubHtml = aniSub > 1 ? `(${ani.html})<sub>${aniSub}</sub>` : ani.html;
+      document.getElementById('lvl3-target-formula').innerHTML = `${cat.symbol}${cSubHtml}${aSubHtml}`;
+
+      document.getElementById('lvl3-formula-breakdown').innerHTML = `
+        Catión: <span class="text-cyan-300 font-bold">${cat.symbol}<sup>+${cat.charge}</sup></span> | 
+        Oxoanión: <span class="text-pink-300 font-bold">${ani.html}<sup>-${ani.charge}</sup></span>
+      `;
+
+      lvl3AssembledBlocks = [];
+      renderLvl3AssembledBox();
+      generateLvl3Blocks();
+    }
+
+    function generateLvl3Blocks() {
+      const targetCat = lvl3Target.cation;
+      const targetAni = lvl3Target.anion;
+
+      // Correct blocks
+      let correctList = [];
+      if (targetAni.prefix) correctList.push(targetAni.prefix + '-');
+      correctList.push(targetAni.root);
+      correctList.push('-' + targetAni.suffix);
+
+      if (targetCat.tradSuffix.startsWith('de ')) {
+        correctList.push('de');
+        correctList.push(targetCat.root);
+      } else {
+        correctList.push(targetCat.root);
+        const catSuffixMatch = targetCat.tradSuffix.match(/oso|ico|cico|ico/);
+        if (catSuffixMatch) {
+          correctList.push('-' + catSuffixMatch[0]);
+        } else {
+          correctList.push(targetCat.tradSuffix);
+        }
+      }
+
+      // Pool of distractor blocks
+      const distractors = ['hipo-', 'per-', 'clor', 'sulf', 'nitr', 'ferr', 'cupr', 'calc', '-ito', '-ato', '-oso', '-ico', 'de'];
+      
+      const combinedPool = Array.from(new Set([...correctList, ...distractors])).sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById('lvl3-blocks-container');
+      container.innerHTML = combinedPool.map(b => `
+        <button onclick="addLvl3Block('${b}')" class="cyber-card px-3 py-2 rounded-xl text-xs font-mono font-bold text-amber-300 border-amber-500/30 hover:bg-amber-950/60 hover:border-amber-400 transition">
+          ${b}
+        </button>
+      `).join('');
+    }
+
+    function addLvl3Block(block) {
+      lvl3AssembledBlocks.push(block);
+      renderLvl3AssembledBox();
+    }
+
+    function clearLvl3Assembly() {
+      lvl3AssembledBlocks = [];
+      renderLvl3AssembledBox();
+    }
+
+    function renderLvl3AssembledBox() {
+      const box = document.getElementById('lvl3-assembled-box');
+      if (lvl3AssembledBlocks.length === 0) {
+        box.innerHTML = `<span class="text-xs text-slate-600 italic px-2">Haz clic en las fichas inferiores para armar el nombre...</span>`;
+        return;
+      }
+
+      box.innerHTML = lvl3AssembledBlocks.map((b, idx) => `
+        <span onclick="removeLvl3Block(${idx})" class="bg-amber-950 border border-amber-500/50 text-amber-300 px-2.5 py-1 rounded-lg text-xs font-mono font-bold cursor-pointer hover:bg-rose-950 hover:border-rose-500 hover:text-rose-300 transition">
+          ${b} <i class="fa-solid fa-xmark text-[10px] ml-1"></i>
+        </span>
+      `).join('');
+    }
+
+    function removeLvl3Block(idx) {
+      lvl3AssembledBlocks.splice(idx, 1);
+      renderLvl3AssembledBox();
+    }
+
+    function validateLevel3() {
+      const userBuiltString = lvl3AssembledBlocks.join('').replace(/-/g, '').toLowerCase();
+      const expectedTrad = `${lvl3Target.anion.nameTrad}${lvl3Target.cation.tradSuffix.replace(/\s+/g, '')}`.toLowerCase().replace(/de/g, 'de');
+
+      // Standardize comparison
+      const cleanExpected = `${lvl3Target.anion.nameTrad} ${lvl3Target.cation.tradSuffix}`.replace(/\s+/g, '').toLowerCase();
+      const isCorrect = userBuiltString === cleanExpected;
+
+      const rawFormula = buildRawFormulaStr(lvl3Target.cation, lvl3Target.anion, lvl3Target.catSub, lvl3Target.aniSub);
+
+      showPedagogicalModal({
+        success: isCorrect,
+        formula: rawFormula,
+        tradName: capitalize(`${lvl3Target.anion.nameTrad} ${lvl3Target.cation.tradSuffix}`),
+        eoNoMetal: lvl3Target.anion.eo,
+        eoMetal: `+${lvl3Target.cation.charge}`,
+        deduction: isCorrect 
+          ? `<b>¡Nomenclatura Impecable!</b> El oxoanión <i>${lvl3Target.anion.nameTrad}</i> + catión <i>${lvl3Target.cation.tradSuffix}</i> da el nombre exacto.`
+          : `<b>Error en el Ensamblaje:</b> Armaste "${userBuiltString}". El nombre correcto es <b>"${capitalize(lvl3Target.anion.nameTrad)} ${lvl3Target.cation.tradSuffix}"</b>.`
+      });
+    }
+
+    /* GENERAL HELPERS */
+    function buildRawFormulaStr(cat, ani, catSub, aniSub) {
+      const cSub = catSub > 1 ? catSub : '';
+      const aSub = aniSub > 1 ? `(${ani.raw})${aniSub}` : ani.raw;
+      return `${cat.symbol}${cSub}${aSub}`;
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    /* PEDAGOGICAL MODAL & SCORE MANAGEMENT */
+    function showPedagogicalModal(data) {
+      const modal = document.getElementById('feedback-modal');
+      const icon = document.getElementById('modal-status-icon');
+      const title = document.getElementById('modal-title');
+      
+      document.getElementById('modal-formula').innerHTML = data.formula;
+      document.getElementById('modal-trad-name').textContent = data.tradName;
+      document.getElementById('modal-eo-nometal').textContent = data.eoNoMetal;
+      document.getElementById('modal-eo-metal').textContent = data.eoMetal;
+      document.getElementById('modal-deduction-text').innerHTML = data.deduction;
+
+      if (data.success) {
+        icon.className = "w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl shadow-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 glow-green";
+        icon.innerHTML = `<i class="fa-solid fa-atom"></i>`;
+        title.textContent = "¡Síntesis Correcta!";
+        title.className = "text-xl font-black text-center font-orbitron mb-1 text-emerald-400";
+
+        score += 150 + (streak * 20);
+        streak++;
+
+        // Add to unlocked gallery if applicable
+        const cleanFormulaKey = data.formula.replace(/<[^>]*>/g, '');
+        if (COMPENDIUM_INFO[cleanFormulaKey]) {
+          unlockedCompounds.add(cleanFormulaKey);
+          updateCompendiumBadge();
+        }
+      } else {
+        icon.className = "w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl shadow-lg bg-rose-500/20 border border-rose-500/40 text-rose-400 glow-pink";
+        icon.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+        title.textContent = "Reacción Incorreceta";
+        title.className = "text-xl font-black text-center font-orbitron mb-1 text-rose-400";
+
+        streak = 0;
+      }
+
+      document.getElementById('score-display').textContent = score;
+      document.getElementById('streak-display').textContent = `${streak}x`;
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        document.getElementById('modal-content').classList.remove('scale-95');
+      }, 10);
+    }
+
+    function closeModalAndNext() {
+      const modal = document.getElementById('feedback-modal');
+      modal.classList.add('opacity-0');
+      document.getElementById('modal-content').classList.add('scale-95');
+      
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        // Advance current level
+        if (currentLevel === 1) initLevel1();
+        if (currentLevel === 2) initLevel2();
+        if (currentLevel === 3) initLevel3();
+      }, 300);
+    }
+
+    /* COMPENDIUM MODAL */
+    function updateCompendiumBadge() {
+      const total = Object.keys(COMPENDIUM_INFO).length;
+      document.getElementById('compendium-badge').textContent = `${unlockedCompounds.size}/${total}`;
+    }
+
+    function toggleCompendiumModal() {
+      const modal = document.getElementById('compendium-modal');
+      if (modal.classList.contains('hidden')) {
+        renderCompendiumGrid();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function renderCompendiumGrid() {
+      const grid = document.getElementById('compendium-grid');
+      grid.innerHTML = Object.keys(COMPENDIUM_INFO).map(formulaKey => {
+        const isUnlocked = unlockedCompounds.has(formulaKey);
+        const item = COMPENDIUM_INFO[formulaKey];
+
+        if (isUnlocked) {
+          return `
+            <div class="cyber-card p-4 rounded-xl border-emerald-500/40 bg-emerald-950/20 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="font-mono text-sm font-black text-emerald-300">${formulaKey}</span>
+                  <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30 font-bold uppercase">Desbloqueado</span>
+                </div>
+                <h4 class="font-bold text-xs text-slate-100 mb-1">${item.name}</h4>
+                <p class="text-[11px] text-slate-400 leading-relaxed">${item.desc}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="cyber-card p-4 rounded-xl border-slate-800 opacity-50 flex flex-col items-center justify-center text-center">
+              <i class="fa-solid fa-lock text-slate-600 text-xl mb-1"></i>
+              <span class="font-mono text-xs font-bold text-slate-500">${formulaKey}</span>
+              <p class="text-[10px] text-slate-600 mt-1">Sintetiza esta sal para desbloquear sus usos reales.</p>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    /* EXPORT STUDENT REPORT */
+    function exportStudentReport() {
+      const totalCompendium = Object.keys(COMPENDIUM_INFO).length;
+      const reportContent = `=====================================================
+INFORME DE EVALUACIÓN: LABORATORIO DE OXISALES
+Nomenclatura Tradicional
+=====================================================
+Fecha de emisión: ${new Date().toLocaleDateString()}
+Puntuación XP Acumulada: ${score} XP
+Máxima Racha de Aciertos: ${streak}x
+Oxisales Desbloqueadas: ${unlockedCompounds.size} / ${totalCompendium}
+
+Desglose de Compuestos Dominados:
+${Array.from(unlockedCompounds).map((c, i) => `${i + 1}. ${c} - ${COMPENDIUM_INFO[c] ? COMPENDIUM_INFO[c].name : 'Sintetizado'}`).join('\n') || 'Ningún compuesto desbloqueado aún.'}
+
+=====================================================
+Estado de la Actividad: COMPLETADO
+=====================================================`;
+
+      const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Informe_Oxisales_XP${score}.txt`;
+      link.click();
+    }
+  </script>
+</body>
+</html>
